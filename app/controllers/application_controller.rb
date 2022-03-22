@@ -22,7 +22,7 @@ class ApplicationController < ActionController::API
     end
   end
 
-  def logged_in_user
+  def current_user
     if decoded_token
       user_id = decoded_token.first['user_id']
       @user = User.find_by id: user_id
@@ -30,10 +30,19 @@ class ApplicationController < ActionController::API
   end
 
   def logged_in?
-    !!logged_in_user
+    !!current_user
   end
 
   def authorized
     render json: { message: 'Please log in' }, status: :unauthorized unless logged_in?
+  end
+
+  def render_result(result, status = 200)
+    if result.success?
+      render json: result.value, status: status
+    else
+      render json: { errors: [{ title: result.errors[:error].problem, description: result.errors[:error].summary }] },
+             status: result.errors[:code]
+    end
   end
 end
