@@ -11,6 +11,10 @@ class ClientPolicy < ApplicationPolicy
     admin? || attendant?
   end
 
+  def can_update?
+    admin? || attendant?
+  end
+
   def can_delete?
     admin? || attendant?
   end
