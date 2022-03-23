@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'sav/errors'
-
 module UseCases
   module Client
     class GetAll < Base
@@ -17,7 +15,7 @@ module UseCases
         success(clients)
       rescue ::Sav::Errors::PermissionDenied => e
         failure({ error: e, code: 403 })
-      rescue ActiveRecord::NotFound => e
+      rescue ActiveRecord::RecordNotFound => e
         failure({ error: e, code: 404 })
       end
 
