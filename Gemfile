@@ -46,6 +46,9 @@ group :development, :test do
   gem 'faker'
 
   gem 'require_all'
+
+  # Environment vars
+  gem 'dotenv-rails'
 end
 
 group :development do

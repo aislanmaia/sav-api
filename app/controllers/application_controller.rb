@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::API
-  # TOKEN_KEY = ENV.fetch('TOKEN_SIGN_KEY')
+  before_action :authorized
+
   TOKEN_KEY = ENV['TOKEN_SIGN_KEY']
 
   def encode_token(payload)
@@ -10,7 +11,7 @@ class ApplicationController < ActionController::API
     request.headers['Authorization']
   end
 
-  def decode_token
+  def decoded_token
     if auth_header
       # Bearer <example_token>
       token = auth_header.split(' ').last
@@ -23,10 +24,10 @@ class ApplicationController < ActionController::API
   end
 
   def current_user
-    if decoded_token
-      user_id = decoded_token.first['user_id']
-      @user = User.find_by id: user_id
-    end
+    return unless decoded_token
+
+    user_id = decoded_token&.first['user_id']
+    @user = User.find_by id: user_id
   end
 
   def logged_in?
@@ -41,7 +42,7 @@ class ApplicationController < ActionController::API
     if result.success?
       render json: result.value, status: status
     else
-      render json: { errors: [{ title: result.errors[:error].problem, description: result.errors[:error].summary }] },
+      render json: { errors: [{ title: result.errors[:error].problem, description: result.errors[:error].description }] },
              status: result.errors[:code]
     end
   end

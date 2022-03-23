@@ -1,6 +1,6 @@
 class ClientsController < ApplicationController
   def all
-    result = ::UseCases::Client::GetAll.new(params.merge(user: current_user))
+    result = ::UseCases::Client::GetAll.new(params.merge(user: current_user)).call
     render_result result
   end
 
