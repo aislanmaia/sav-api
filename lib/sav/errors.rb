@@ -1,4 +1,4 @@
-module Save
+module Sav
   module Errors
     class PermissionDenied < StandardError
       def problem

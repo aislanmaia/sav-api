@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative './result'
+
 module Sav
   class Base
     def initialize(params, context: {})

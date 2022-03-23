@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'sav/errors'
+
 module UseCases
   module Client
     class GetAll < Base

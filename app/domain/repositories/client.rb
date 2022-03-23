@@ -1,4 +1,4 @@
-module Repositores
+module Repositories
   class Client
     def initialize(scope = ::Client)
       @scope = scope
