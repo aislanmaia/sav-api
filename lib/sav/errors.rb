@@ -9,5 +9,15 @@ module Sav
         'You haven\'t permission to execute this action'
       end
     end
+
+    class RecordNotFound < StandardError
+      def problem
+        'Record not found'
+      end
+
+      def description
+        'Record not found in database to perform the action'
+      end
+    end
   end
 end

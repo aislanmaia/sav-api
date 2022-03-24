@@ -5,14 +5,23 @@ class ClientsController < ApplicationController
   end
 
   def create
-    # code here
+    result = ::UseCases::Client::CreateClient.new(permitted_params.merge(user: current_user)).call
+    render_result result
   end
 
   def update
-    # code here
+    result = ::UseCases::Client::UpdateClient.new(permitted_params.merge(user: current_user)).call
+    render_result result
   end
 
   def delete
-    # code here
+    result = ::UseCases::Client::DeleteClient.new(params.merge(user: current_user)).call
+    render_result result
+  end
+
+  private
+
+  def permitted_params
+    params.require(:client).permit(:id, :name, :email, :phone, address: %i[street number neighborhood city uf])
   end
 end

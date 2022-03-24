@@ -12,7 +12,7 @@ module UseCases
       def call
         can_perform_action?
         client = create_client
-        success(value: client)
+        success(client)
       rescue ::Sav::Errors::PermissionDenied => e
         failure({ error: e, code: 403 })
       rescue ::StandardError => e
@@ -31,7 +31,7 @@ module UseCases
       end
 
       def client_params
-        @params.with_indifferent_access
+        @params.to_h.slice(:id, :name, :email, :phone, :address).with_indifferent_access
       end
 
       def can_perform_action?

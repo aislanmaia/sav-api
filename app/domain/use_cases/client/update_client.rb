@@ -13,17 +13,17 @@ module UseCases
         can_perform_action?
         client = find_client client_params[:id]
         update_client client
-        success(value: client)
+        success(client)
       rescue ::Sav::Errors::PermissionDenied => e
         failure({ error: e, code: 403 })
-      rescue ::ActiveRecord::RecordNotFound => e
+      rescue ::Sav::Errors::RecordNotFound => e
         failure({ error: e, code: 404 })
       end
 
       private
 
       def find_client(id)
-        ::Client.find id
+        ::Client.find id || raise(::Sav::Errors::RecordNotFound)
       end
 
       def update_client(client)
@@ -36,7 +36,7 @@ module UseCases
       end
 
       def client_params
-        @params.with_indifferent_access
+        @params.to_h.slice(:id, :name, :email, :phone, :address).with_indifferent_access
       end
 
       def can_perform_action?
