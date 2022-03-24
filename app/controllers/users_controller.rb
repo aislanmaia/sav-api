@@ -1,14 +1,24 @@
 class UsersController < ApplicationController
   before_action :authorized, only: [:valid_token]
 
+  def all
+    result = ::UseCases::User::GetAll.new(params.merge(user: current_user)).call
+    render_result result
+  end
+
   def create
-    @user = User.create(user_params)
-    if @user.valid?
-      token = encode_token({ user_id: @user.id })
-      render json: { user: @user, token: token }
-    else
-      render json: { error: "Invalid username or password" }
-    end
+    result = ::UseCases::User::CreateUser.new(user_params.merge(user: current_user)).call
+    render_result result
+  end
+
+  def update
+    result = ::UseCases::User::UpdateUser.new(user_params.merge(user: current_user)).call
+    render_result result
+  end
+
+  def delete
+    result = ::UseCases::User::DeleteUser.new(params.merge(user: current_user)).call
+    render_result result
   end
 
   def login
@@ -42,7 +52,7 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.permit(:name, :email, :password, :registry, :role)
+    params.require(:user).permit(:id, :name, :email, :password, :registry, :role)
   end
 
 end

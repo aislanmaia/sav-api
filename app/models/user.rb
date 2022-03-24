@@ -5,6 +5,7 @@ class User < ApplicationRecord
 
   validates :role, presence: true
   validates :email, presence: true, uniqueness: true
+  validates :registry, presence: true, uniqueness: true
 
   def role
     ROLES.key(self[:role]) || :attendant
