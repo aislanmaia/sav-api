@@ -6,7 +6,7 @@ module UseCases
       def initialize(params, context: {})
         super(params, context: context)
 
-        @client_repository = context.fetch(:client_repository) { ::Repositories::Client.new }
+        @user_repository = context.fetch(:user_repository) { ::Repositories::User.new }
       end
 
       def call
@@ -32,7 +32,7 @@ module UseCases
 
       def can_perform_action?
         user = @params[:user]
-        user && policy(::User, user).can_delete? || raise(::Sav::Errors::PermissionDenied)
+        user && policy(::User, user).can_delete?(@params[:id]) || raise(::Sav::Errors::PermissionDenied)
       end
     end
   end

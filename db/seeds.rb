@@ -7,6 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 User.create(username: 'Admin', email: 'admin@admin.com', password: "123456", role: 1, registry: 999)
+User.create(username: 'Atendente 1', email: 'atendente1@email.com', password: "123456", role: 2, registry: 888)
 
 Client.create(name: 'Carolyn T. Moore', email: 'carolyntmoore@jourrapide.com', phone: '67986453199', address: {
   street: 'Rua A',

@@ -6,7 +6,8 @@ module UseCases
   module User
     describe GetAll do
       it 'should return all users when user is admin' do
-        create(:client)
+        create(:user_technician)
+        create(:user_attendant)
         user = create(:user_admin)
         result = ::UseCases::User::GetAll.new({ user: user }).call
         expect(result.success?).to be_truthy
@@ -15,8 +16,11 @@ module UseCases
       it 'should return all users when user is attendant' do
         create(:user_admin)
         create(:user_attendant)
+        create(:user_technician)
         user = create(:user_attendant)
+        ::User.count
         result = ::UseCases::User::GetAll.new({ user: user }).call
+        expect(result.value&.count).to eq 3
         expect(result.success?).to be_truthy
       end
 

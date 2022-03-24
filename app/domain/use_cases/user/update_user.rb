@@ -28,20 +28,20 @@ module UseCases
 
       def update_user(user)
         user.update!(
-          name: client_params[:name],
-          email: client_params[:email],
-          phone: client_params[:phone],
-          address: client_params[:address]
+          username: user_params[:name],
+          email: user_params[:email],
+          registry: user_params[:registry],
+          password: user_params[:password]
         )
       end
 
-      def client_params
-        @params.to_h.slice(:id, :name, :email, :phone, :address).with_indifferent_access
+      def user_params
+        @params.to_h.slice(:id, :name, :email, :registry, :password).with_indifferent_access
       end
 
       def can_perform_action?
         user = @params[:user]
-        user && policy(::Client, user).can_update? || raise(::Sav::Errors::PermissionDenied)
+        user && policy(::User, user).can_update?(@params[:id]) || raise(::Sav::Errors::PermissionDenied)
       end
     end
   end

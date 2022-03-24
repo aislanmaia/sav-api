@@ -11,7 +11,7 @@ module UseCases
 
       def call
         can_perform_action?
-        users = all_users
+        users = all_users_by_scope
         success(users)
       rescue ::Sav::Errors::PermissionDenied => e
         failure({ error: e, code: 403 })
@@ -23,11 +23,24 @@ module UseCases
 
       def can_perform_action?
         user = @params[:user]
-        user && policy(::User, user).can_list? || raise(::Sav::Errors::PermissionDenied)
+        user && policy(::User, user).can_list?
       end
 
-      def all_users
-        @client_repository.all
+      def admin?
+        user = @params[:user]
+        policy(::User, user).admin?
+      end
+
+      def attendant?
+        user = @params[:user]
+        policy(::User, user).attendant?
+      end
+
+      def all_users_by_scope
+        return @user_repository.all if admin?
+        return @user_repository.attendants.or(@user_repository.technicians) if attendant?
+
+        raise(::Sav::Errors::PermissionDenied)
       end
     end
   end

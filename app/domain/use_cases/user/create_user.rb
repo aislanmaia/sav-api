@@ -23,7 +23,7 @@ module UseCases
 
       def create_user
         ::User.create!(
-          name: user_params[:name],
+          username: user_params[:name],
           email: user_params[:email],
           registry: user_params[:registry],
           password: user_params[:password],
