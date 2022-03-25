@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authorized, only: [:valid_token]
+  before_action :authorized, except: [:login]
 
   def all
     result = ::UseCases::User::GetAll.new(params.merge(user: current_user)).call
@@ -24,7 +24,7 @@ class UsersController < ApplicationController
   def login
     @user = User.find_by(email: params[:email])
 
-    if @user && @user.authenticate(params[:password])
+    if @user&.authenticate(params[:password])
       token = encode_token({ user_id: @user.id })
       entity_update_token(@user, token)
       render json: {
