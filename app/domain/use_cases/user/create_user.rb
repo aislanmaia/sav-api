@@ -15,6 +15,8 @@ module UseCases
         success(user)
       rescue ::Sav::Errors::PermissionDenied => e
         failure({ error: e, code: 403 })
+      rescue ::Sav::Errors::RecordInvalid => e
+        failure({ error: e, code: 422 })
       rescue ::StandardError => e
         failure({ error: e, code: 422 })
       end
@@ -22,17 +24,21 @@ module UseCases
       private
 
       def create_user
-        ::User.create!(
-          username: user_params[:name],
+        user = ::User.create(
+          username: user_params[:firstname].downcase,
+          firstname: user_params[:firstname],
+          lastname: user_params[:lastname],
           email: user_params[:email],
           registry: user_params[:registry],
           password: user_params[:password],
           role: user_params[:role]
         )
+        user.valid? || raise(::Sav::Errors::RecordInvalid, user.errors.full_messages.first)
+        user
       end
 
       def user_params
-        @params.to_h.slice(:id, :name, :email, :registry, :password, :role).with_indifferent_access
+        @params.to_h.slice(:id, :name, :firstname, :lastname, :email, :registry, :password, :role).with_indifferent_access
       end
 
       def can_perform_action?
