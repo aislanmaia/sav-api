@@ -11,6 +11,8 @@ module UseCases
 
       def call
         can_perform_action?
+        valid_role?
+        convert_role
         user = create_user
         success(user)
       rescue ::Sav::Errors::PermissionDenied => e
@@ -44,6 +46,12 @@ module UseCases
       def can_perform_action?
         user = @params[:user]
         user && policy(::User, user).can_create? || raise(::Sav::Errors::PermissionDenied)
+      end
+
+      def valid_role?
+        return if @params[:role] != :admin
+
+        raise(::Sav::Errors::RecordInvalid, 'user role is not valid!')
       end
     end
   end

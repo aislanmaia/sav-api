@@ -8,12 +8,13 @@ class UsersController < ApplicationController
 
   def create
     result = ::UseCases::User::CreateUser.new(user_params.merge(user: current_user)).call
-    render_result result
+    serialize result, ::UserSerializer
   end
 
   def update
     result = ::UseCases::User::UpdateUser.new(user_params.merge(user: current_user)).call
-    render_result result
+    # render_result result
+    serialize result, ::UserSerializer
   end
 
   def delete

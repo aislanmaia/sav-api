@@ -10,7 +10,8 @@ module UseCases
       let(:params) do
         {
           id: subject.id,
-          name: 'User 1',
+          firstname: 'User1',
+          lastname: 'Last name',
           email: 'user1@email.com',
           registry: 123456789,
           password: '123456',

@@ -9,7 +9,8 @@ module UseCases
         logged_user = create(:user_admin)
 
         params = {
-          name: 'User 1',
+          firstname: 'User1',
+          lastname: 'Last name',
           email: 'user1@email.com',
           registry: 123456789,
           password: '123456',
@@ -22,7 +23,8 @@ module UseCases
       it 'should create with success when user is attendant' do
         logged_user = create(:user_attendant)
         params = {
-          name: 'User 1',
+          firstname: 'User1',
+          lastname: 'Last name',
           email: 'user1@email.com',
           registry: 123456789,
           password: '123456',
@@ -36,7 +38,8 @@ module UseCases
         logged_user = create(:user_technician)
 
         params = {
-          name: 'User 1',
+          firstname: 'User1',
+          lastname: 'Last name',
           email: 'user1@email.com',
           registry: 123456789,
           password: '123456',

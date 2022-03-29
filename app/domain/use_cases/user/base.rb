@@ -10,6 +10,10 @@ module UseCases
         super
         @params = params
       end
+
+      def convert_role
+        @params[:role] = ::User::ROLES.fetch(@params[:role].to_sym) { ::User::ROLES[:attendant] } if @params[:role]
+      end
     end
   end
 end
