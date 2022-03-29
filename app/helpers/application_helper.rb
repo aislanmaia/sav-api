@@ -3,7 +3,8 @@ module ApplicationHelper
     if result.success?
       render json: serializer.new(result.value).serialized_json, status: success_status
     else
-      render json: { errors: [result.errors] }, status: result.errors[:code] || failure_status
+      render json: { errors: [{ title: result.errors[:error].problem, description: result.errors[:error].description }] },
+             status: result.errors[:code] || failure_status
     end
   end
 end
