@@ -34,6 +34,13 @@ module UseCases
         expect(result.errors[:code]).to eq(403)
         expect(result.errors[:error]).to be_kind_of(::Sav::Errors::PermissionDenied)
       end
+      it 'should not permit user delete himself' do
+        user = create(:user_attendant)
+        params = { id: user.id, user: user }
+        result = ::UseCases::User::DeleteUser.new(params).call
+        expect(result.errors[:code]).to eq(403)
+        expect(result.errors[:error]).to be_kind_of(::Sav::Errors::PermissionDenied)
+      end
     end
   end
 end

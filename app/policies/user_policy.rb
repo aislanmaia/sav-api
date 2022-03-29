@@ -21,7 +21,16 @@ class UserPolicy < ApplicationPolicy
   end
 
   def can_delete?(user_id)
-    admin? || attendant? && @user_repository.find_by_id(user_id).role != :admin
+    user_target = @user_repository.find_by_id(user_id)
+    not_himself?(user_id) && (admin? || attendant? && user_target.role != :admin)
+  end
+
+  def himself?(user_id)
+    @user == @user_repository.find_by_id(user_id)
+  end
+
+  def not_himself?(user_id)
+    !himself? user_id
   end
 end
 
