@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
+  include ::ApplicationHelper
   before_action :authorized
 
   TOKEN_KEY = ENV['TOKEN_SIGN_KEY']

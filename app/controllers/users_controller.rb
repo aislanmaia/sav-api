@@ -1,20 +1,31 @@
 class UsersController < ApplicationController
-  before_action :authorized, only: [:valid_token]
+  before_action :authorized, except: [:login]
+
+  def all
+    result = ::UseCases::User::GetAll.new(params.merge(user: current_user)).call
+    render_result result
+  end
 
   def create
-    @user = User.create(user_params)
-    if @user.valid?
-      token = encode_token({ user_id: @user.id })
-      render json: { user: @user, token: token }
-    else
-      render json: { error: "Invalid username or password" }
-    end
+    result = ::UseCases::User::CreateUser.new(user_params.merge(user: current_user)).call
+    serialize result, ::UserSerializer
+  end
+
+  def update
+    result = ::UseCases::User::UpdateUser.new(user_params.merge(user: current_user)).call
+    # render_result result
+    serialize result, ::UserSerializer
+  end
+
+  def delete
+    result = ::UseCases::User::DeleteUser.new(params.merge(user: current_user)).call
+    render_result result
   end
 
   def login
     @user = User.find_by(email: params[:email])
 
-    if @user && @user.authenticate(params[:password])
+    if @user&.authenticate(params[:password])
       token = encode_token({ user_id: @user.id })
       entity_update_token(@user, token)
       render json: {
@@ -42,7 +53,7 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.permit(:name, :email, :password, :registry, :role)
+    params.permit(:id, :name, :firstname, :lastname, :email, :password, :password_confirmation, :registry, :role)
   end
 
 end

@@ -5,9 +5,12 @@ require 'rails_helper'
 describe User, type: :model do
   it 'is valid when required fields are present and email is unique' do
     user = User.new(
-      username: 'User 1',
+      username: 'user1',
+      firstname: 'User1',
+      lastname: 'Last name',
       email: 'user1@email.com',
       role: 1,
+      registry: 123456789,
       password: '123456'
     )
     expect(user).to be_valid
@@ -20,7 +23,9 @@ describe User, type: :model do
       password: '123456'
     )
     expected_user = User.new(
-      username: 'Expected User',
+      username: 'expected',
+      firstname: 'Expected User',
+      lastname: 'Last name',
       email: 'user1@email.com',
       role: 1,
       password: '123456'

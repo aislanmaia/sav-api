@@ -19,5 +19,21 @@ module Sav
         'Record not found in database to perform the action'
       end
     end
+
+    class RecordInvalid < StandardError
+      def initialize(errors)
+        super()
+        @errors = errors
+      end
+
+      def problem
+        'Record not valid'
+      end
+
+      def description
+        "Validation error: #{@errors}"
+      end
+    end
+
   end
 end
