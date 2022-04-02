@@ -7,7 +7,9 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 User.create(username: 'admin', firstname: Faker::Name.first_name, lastname: Faker::Name.last_name, email: 'admin@admin.com', password: "123456", role: 1, registry: 111)
-User.create(username: 'attendant1', firstname: Faker::Name.first_name, lastname: Faker::Name.last_name, email: 'atendente1@email.com', password: "123456", role: 1, registry: 222)
+User.create(username: 'attendant1', firstname: Faker::Name.first_name, lastname: Faker::Name.last_name, email: 'atendente1@email.com', password: "123456", role: 2, registry: 222)
+User.create(username: 'technician1', firstname: Faker::Name.first_name, lastname: Faker::Name.last_name, email: 'tecnico1@email.com', password: "123456", role: 3, registry: 333)
+User.create(username: 'technician2', firstname: Faker::Name.first_name, lastname: Faker::Name.last_name, email: 'tecnico2@email.com', password: "123456", role: 3, registry: 444)
 
 Client.create(name: 'Carolyn T. Moore', email: 'carolyntmoore@jourrapide.com', phone: '67986453199', address: {
   street: 'Rua A',

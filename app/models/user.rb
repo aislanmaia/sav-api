@@ -7,6 +7,8 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
   validates :registry, presence: true, uniqueness: true
 
+  has_many :schedules
+
   def role
     ROLES.key(self[:role]) || :attendant
   end
